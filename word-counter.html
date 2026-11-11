@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word &amp; Character Counter — {SITE}</title>
+<meta name="description" content="">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230e2a47'/><text x='32' y='43' font-family='sans-serif' font-size='26' font-weight='bold' fill='%23f5a623' text-anchor='middle'>ES</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="siteHeader"></div>
+<div class="wrap">
+  <div class="calc">
+    <h1>Word &amp; Character Counter</h1>
+    <p class="sub">Counts update as you type. Works with English and Spanish text, including accented characters.</p>
+    <div class="field"><label>Your text</label>
+      <textarea id="wcText" rows="8" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;font-size:1rem" placeholder="Paste or type your text here…"></textarea></div>
+    <div class="results show">
+      <div class="rgrid">
+        <div class="rbox"><div class="k">Words</div><div class="v" id="wcWords">0</div></div>
+        <div class="rbox"><div class="k">Characters</div><div class="v" id="wcChars">0</div></div>
+        <div class="rbox"><div class="k">Characters (no spaces)</div><div class="v" id="wcCharsNS">0</div></div>
+        <div class="rbox"><div class="k">Sentences</div><div class="v" id="wcSent">0</div></div>
+        <div class="rbox"><div class="k">Paragraphs</div><div class="v" id="wcPara">0</div></div>
+        <div class="rbox"><div class="k">Reading time</div><div class="v" id="wcRead">0 <small>min</small></div></div>
+      </div>
+    </div>
+    <p class="note">Translation is usually priced per word — paste a document here first to know exactly how many words you are sending for translation.</p>
+  </div>
+</div>
+<div id="siteFooter"></div>
+<script src="assets/site.js"></script>
+<script>
+var wc = document.getElementById("wcText");
+function upd() {
+  var t = wc.value;
+  var words = (t.trim().match(/\S+/g) || []).length;
+  document.getElementById("wcWords").textContent = words;
+  document.getElementById("wcChars").textContent = t.length;
+  document.getElementById("wcCharsNS").textContent = t.replace(/\s/g, "").length;
+  document.getElementById("wcSent").textContent = (t.match(/[.!?…]+/g) || []).length;
+  document.getElementById("wcPara").textContent = t.trim() ? t.split(/\n\s*\n/).filter(function (p) { return p.trim(); }).length : 0;
+  document.getElementById("wcRead").innerHTML = (words ? Math.max(1, Math.round(words / 200)) : 0) + " <small>min</small>";
+}
+wc.addEventListener("input", upd); upd();
+</script>
+</body>
+</html>

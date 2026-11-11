@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — {SITE}</title>
+<meta name="description" content="">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230e2a47'/><text x='32' y='43' font-family='sans-serif' font-size='26' font-weight='bold' fill='%23f5a623' text-anchor='middle'>ES</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="siteHeader"></div>
+<div class="pagehead"><div class="wrap"><h1>Contact</h1><p>Questions, corrections or suggestions — we read everything.</p></div></div>
+<div class="wrap"><div class="prose">
+  <p>The fastest way to reach us is by email:</p>
+  <p style="font-size:1.15rem"><strong><a data-sitemail href="#">admin@site.com</a></strong></p>
+  <h2>What to write about</h2>
+  <p>· A translation you believe is wrong — include the exact text and direction (English→Spanish or Spanish→English).<br>
+  · A mistake in a guide — tell us the guide title and what should be corrected.<br>
+  · A tool idea — tell us what would help you learn or translate better.</p>
+  <p>Please note: we cannot provide certified translations, and we cannot translate full documents sent by email. Use the free translator on this site for everyday text, and a certified translator for official documents.</p>
+</div></div>
+<div id="siteFooter"></div>
+<script src="assets/site.js"></script>
+<script>
+fetch("data/content.json").then(function (r) { return r.json(); }).then(function (c) {
+  var a = document.querySelector("[data-sitemail]");
+  if (a && c.contactEmail) a.setAttribute("href", "mailto:" + c.contactEmail);
+});
+</script>
+</body>
+</html>

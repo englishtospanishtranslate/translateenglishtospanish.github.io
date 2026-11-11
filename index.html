@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free English to Spanish Translator — {SITE}</title>
+<meta name="description" content="">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230e2a47'/><text x='32' y='43' font-family='sans-serif' font-size='26' font-weight='bold' fill='%23f5a623' text-anchor='middle'>ES</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="siteHeader"></div>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>Free English ⇄ Spanish Translator</h1>
+    <p>Translate words, sentences and full paragraphs between English and Spanish instantly — free, with no sign-up. Listen to the pronunciation, copy the result, and explore our language tools and practical translation guides.</p>
+    <div class="badges"><span class="badge">✓ 100% free, no sign-up</span><span class="badge">✓ English → Spanish &amp; Spanish → English</span><span class="badge">✓ Listen to pronunciation</span><span class="badge">✓ 5 free language tools</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="calc" style="margin-top:26px">
+    <h2 style="color:var(--navy);margin-top:0">Translate now</h2>
+    <div id="homeTranslator"></div>
+  </div>
+</div>
+
+<section class="block" style="padding-top:6px">
+  <div class="wrap">
+    <h2 class="sec">Free language tools</h2>
+    <p class="secsub">Every tool runs right in your browser — fast, free and private.</p>
+    <div class="grid" id="toolsGrid"></div>
+  </div>
+</section>
+
+<section class="block" style="background:#e9f1f8">
+  <div class="wrap">
+    <h2 class="sec">Latest translation guides</h2>
+    <p class="secsub">Practical, original guides that help you translate better and learn Spanish faster.</p>
+    <div class="grid" id="latestArticles"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap faq">
+    <h2 class="sec">Frequently asked questions</h2>
+    <p class="secsub">Quick answers about this translator.</p>
+    <details><summary>Is this translator really free?</summary><p>Yes. The translator and all tools on this site are free to use with no account. Translation is powered by a free community translation service, so a fair-use daily limit may apply on very heavy use.</p></details>
+    <details><summary>How accurate is the translation?</summary><p>For everyday sentences, travel phrases, messages and homework it is very reliable. Idioms, slang and legal or medical wording can need a human touch — for official documents, always use a certified translator.</p></details>
+    <details><summary>Can I hear how the Spanish sounds?</summary><p>Yes. After translating, press the “Listen” button and your browser will read the translation aloud using its built-in Spanish voice.</p></details>
+    <details><summary>Is my text stored anywhere?</summary><p>Your text is sent only to the translation service to produce the result. We do not keep copies of what you translate on this website.</p></details>
+  </div>
+</section>
+
+<div id="siteFooter"></div>
+<script src="assets/site.js"></script>
+<script src="assets/translate.js"></script>
+<script>initTranslator(document.getElementById("homeTranslator"), "en", "es");</script>
+</body>
+</html>

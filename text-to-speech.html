@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text to Speech — English &amp; Spanish — {SITE}</title>
+<meta name="description" content="">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230e2a47'/><text x='32' y='43' font-family='sans-serif' font-size='26' font-weight='bold' fill='%23f5a623' text-anchor='middle'>ES</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="siteHeader"></div>
+<div class="wrap">
+  <div class="calc">
+    <h1>Text to Speech — English &amp; Spanish</h1>
+    <p class="sub">Paste any text, choose the language, and your browser will read it aloud. Perfect for checking Spanish pronunciation.</p>
+    <div class="field" style="margin-bottom:12px"><label>Language</label>
+      <select id="ttsLang"><option value="es">Spanish</option><option value="en">English</option></select></div>
+    <div class="field"><label>Text to read aloud</label>
+      <textarea id="ttsText" rows="5" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;font-size:1rem" placeholder="Example: Buenos días, ¿cómo estás hoy?"></textarea></div>
+    <div class="field" style="margin-top:12px"><label>Speed</label>
+      <select id="ttsRate"><option value="0.75">Slow</option><option value="1" selected>Normal</option><option value="1.25">Fast</option></select></div>
+    <div class="btnrow"><button class="calc-btn" id="ttsPlay" type="button">🔊 Play</button>
+      <button class="ghost" id="ttsStop" type="button">Stop</button></div>
+    <div class="err" id="ttsErr"></div>
+    <p class="note">Voices come from your own browser/device, so the available Spanish and English voices depend on your system. Chrome on desktop and Android usually offers the widest choice.</p>
+  </div>
+</div>
+<div id="siteFooter"></div>
+<script src="assets/site.js"></script>
+<script src="assets/translate.js"></script>
+<script>
+document.getElementById("ttsPlay").addEventListener("click", function () {
+  var text = document.getElementById("ttsText").value.trim();
+  var err = document.getElementById("ttsErr");
+  if (!("speechSynthesis" in window)) { err.textContent = "Sorry — your browser does not support text to speech."; err.classList.add("show"); return; }
+  if (!text) { err.textContent = "Please type or paste some text first."; err.classList.add("show"); return; }
+  err.classList.remove("show");
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  var lang = document.getElementById("ttsLang").value;
+  u.lang = lang === "es" ? "es-ES" : "en-US";
+  u.rate = parseFloat(document.getElementById("ttsRate").value);
+  var v = speechSynthesis.getVoices().filter(function (x) { return x.lang && x.lang.toLowerCase().indexOf(lang) === 0; })[0];
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+});
+document.getElementById("ttsStop").addEventListener("click", function () { speechSynthesis.cancel(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — TranslateES</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230e2a47'/><text x='32' y='43' font-family='sans-serif' font-size='26' font-weight='bold' fill='%23f5a623' text-anchor='middle'>ES</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.admin-wrap{max-width:1060px;margin:0 auto;padding:22px 18px 60px}
+.login-card{max-width:420px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px;box-shadow:0 4px 18px rgba(15,45,75,.08)}
+.login-card h1{color:var(--navy);margin:0 0 4px;font-size:1.4rem}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0}
+.tabs button{border:1px solid var(--line);background:#fff;padding:9px 16px;border-radius:999px;cursor:pointer;font-size:.93rem}
+.tabs button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;display:none}
+.panel.show{display:block}
+.panel h2{color:var(--navy);margin:0 0 6px}
+textarea.code{width:100%;min-height:150px;font-family:Consolas,Menlo,monospace;font-size:.86rem;padding:12px;border:1px solid var(--line);border-radius:8px}
+textarea.body{min-height:300px}
+input[type=text],input[type=email],input[type=password],select,input[type=date]{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:8px;font-size:.96rem}
+label.fl{display:block;font-size:.86rem;font-weight:600;margin:14px 0 5px;color:var(--navy)}
+table.list{width:100%;border-collapse:collapse;font-size:.93rem}
+table.list th,table.list td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top}
+table.list th{color:var(--navy)}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:.75rem;background:#e4f3ea;color:var(--ok)}
+.pill.off{background:#f7e8e2;color:var(--warn)}
+.banner{border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.92rem}
+.banner.warn{background:#fdf6e3;border:1px solid #eed9a0}
+.banner.ok{background:#e9f6ee;border:1px solid #bfe3cd;display:none}
+.banner.err{background:#fdf0ec;border:1px solid #f0c4b8;display:none}
+.small{font-size:.86rem;color:var(--muted)}
+.rowbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.mini{padding:6px 12px;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+
+  <!-- LOGIN -->
+  <div id="loginView">
+    <div class="login-card">
+      <h1>Admin Login</h1>
+      <p class="small">Sign in to manage the whole site — settings, header code, articles, tools and account.</p>
+      <label class="fl">Admin email</label>
+      <input type="email" id="loginEmail" autocomplete="username" placeholder="admin@site.com">
+      <label class="fl">Password</label>
+      <input type="password" id="loginPass" autocomplete="current-password" placeholder="••••••••">
+      <div class="banner err" id="loginErr"></div>
+      <div class="rowbtns"><button class="calc-btn" id="loginBtn" type="button">Login</button></div>
+      <p class="small" style="margin-top:16px">Default login for a fresh install: <strong>admin@site.com</strong> / <strong>admin123</strong> — change it in the Account tab after your first login.</p>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panelView" style="display:none">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <h1 style="color:var(--navy);margin:0">Site Admin</h1>
+      <span class="small" id="whoami"></span>
+      <span style="margin-left:auto"></span>
+      <a class="ghost mini" href="index.html" style="text-decoration:none;border:1px solid var(--line);border-radius:9px;background:#eef4fa;color:var(--navy)">View site</a>
+      <button class="ghost mini" id="logoutBtn" type="button">Logout</button>
+    </div>
+
+    <div class="banner warn" id="draftBanner" style="display:none">⚠ GitHub is not connected, so Publish saves a <strong>draft in this browser only</strong> — visitors will not see changes. Connect GitHub in the <strong>GitHub Publish</strong> tab to make changes live for everyone.</div>
+    <div class="banner ok" id="okBanner"></div>
+    <div class="banner err" id="errBanner"></div>
+
+    <div class="tabs" id="tabs">
+      <button data-tab="dash" class="active" type="button">Site Settings</button>
+      <button data-tab="head" type="button">Header Code</button>
+      <button data-tab="articles" type="button">Articles</button>
+      <button data-tab="tools" type="button">Tools</button>
+      <button data-tab="account" type="button">Account</button>
+      <button data-tab="github" type="button">GitHub Publish</button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="panel show" id="tab-dash">
+      <h2>Site settings</h2>
+      <p class="small">Site name, tagline and contact email shown across the whole site.</p>
+      <label class="fl">Site name</label><input type="text" id="f_siteName">
+      <label class="fl">Tagline</label><input type="text" id="f_tagline">
+      <label class="fl">Contact email (shown on site)</label><input type="email" id="f_contactEmail">
+      <label class="fl">Site description</label><textarea class="code" id="f_siteDescription" style="min-height:90px"></textarea>
+      <div class="rowbtns"><button class="calc-btn" data-save="content" type="button">Publish settings</button></div>
+    </div>
+
+    <!-- HEADER CODE -->
+    <div class="panel" id="tab-head">
+      <h2>Header code</h2>
+      <p class="small">This code is inserted into the <strong>&lt;head&gt;</strong> of every page — paste AdSense / ad network code, Google Analytics, verification meta tags or custom CSS here. Footer code goes just before &lt;/body&gt;.</p>
+      <label class="fl">Header code (head)</label><textarea class="code" id="f_headerCode" placeholder="<!-- paste ad code / analytics / meta tags here -->"></textarea>
+      <label class="fl">Footer code</label><textarea class="code" id="f_footerCode" placeholder="<!-- scripts that must load at the end of the page -->"></textarea>
+      <div class="rowbtns"><button class="calc-btn" data-save="content" type="button">Publish code</button></div>
+    </div>
+
+    <!-- ARTICLES -->
+    <div class="panel" id="tab-articles">
+      <h2>Articles / Guides</h2>
+      <p class="small">Publish new guides, edit or unpublish existing ones. Content can be HTML.</p>
+      <div class="rowbtns" style="margin:10px 0 16px"><button class="calc-btn mini" id="newArticleBtn" type="button">+ New article</button></div>
+      <div id="articleList"></div>
+      <div id="articleEditor" style="display:none;border-top:2px dashed var(--line);margin-top:20px;padding-top:16px">
+        <h3 style="color:var(--navy);margin:0 0 4px" id="aeTitle">New article</h3>
+        <input type="hidden" id="aeIndex">
+        <label class="fl">Title</label><input type="text" id="ae_title">
+        <label class="fl">Slug (URL name)</label><input type="text" id="ae_slug">
+        <label class="fl">Category</label><input type="text" id="ae_category" placeholder="e.g. Translation Tips">
+        <label class="fl">Date</label><input type="date" id="ae_date">
+        <label class="fl">Short excerpt (shown on listing cards)</label><textarea class="code" id="ae_excerpt" style="min-height:70px"></textarea>
+        <label class="fl">Full article content (HTML allowed)</label><textarea class="code body" id="ae_content" placeholder="<p>Write your article…</p>"></textarea>
+        <label class="fl" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="ae_published" checked style="width:auto"> Published</label>
+        <div class="rowbtns">
+          <button class="calc-btn" id="aeSave" type="button">Save &amp; publish article</button>
+          <button class="ghost" id="aeCancel" type="button">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="panel" id="tab-tools">
+      <h2>Tools</h2>
+      <p class="small">Switch tools on or off and edit the name and description shown on the site. (The tool pages themselves keep working either way — turning one off only removes it from the listings.)</p>
+      <div id="toolList"></div>
+      <div class="rowbtns"><button class="calc-btn" data-save="content" type="button">Publish tools</button></div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="panel" id="tab-account">
+      <h2>Admin account</h2>
+      <p class="small">Change the admin login email and password. You will need your current password.</p>
+      <label class="fl">Current password</label><input type="password" id="acc_cur" autocomplete="current-password">
+      <label class="fl">New admin email</label><input type="email" id="acc_email">
+      <label class="fl">New password (leave empty to keep current)</label><input type="password" id="acc_new" autocomplete="new-password">
+      <label class="fl">Confirm new password</label><input type="password" id="acc_new2" autocomplete="new-password">
+      <div class="rowbtns"><button class="calc-btn" id="accSave" type="button">Save account changes</button></div>
+      <p class="small" style="margin-top:14px">Honest note: this is a static GitHub Pages site, so the login screen is a lock on the admin page, not server security. The real protection is your GitHub account and token — only someone with your GitHub token can actually publish changes to the site files.</p>
+    </div>
+
+    <!-- GITHUB -->
+    <div class="panel" id="tab-github">
+      <h2>GitHub Publish</h2>
+      <p class="small">Connect your GitHub repository so Publish buttons save changes into the repo — GitHub Pages then updates the live site automatically within a minute or two. Your token is stored <strong>only in this browser</strong>, never in the site files.</p>
+      <label class="fl">GitHub username (owner)</label><input type="text" id="gh_owner" placeholder="e.g. yourname">
+      <label class="fl">Repository name</label><input type="text" id="gh_repo" placeholder="e.g. translatees">
+      <label class="fl">Branch</label><input type="text" id="gh_branch" placeholder="main">
+      <label class="fl">Personal Access Token (classic token with “repo” scope, or fine-grained token with Contents: Read &amp; Write)</label>
+      <input type="password" id="gh_token" placeholder="ghp_…">
+      <div class="rowbtns">
+        <button class="calc-btn" id="ghTest" type="button">Save &amp; test connection</button>
+        <button class="ghost" id="ghForget" type="button">Forget token on this browser</button>
+      </div>
+      <p class="small" id="ghStatus" style="margin-top:12px"></p>
+      <h3 style="color:var(--navy)">Backup</h3>
+      <p class="small">Download the current site data as JSON files, or restore from a backup.</p>
+      <div class="rowbtns">
+        <button class="ghost mini" id="expContent" type="button">Download content.json</button>
+        <button class="ghost mini" id="expArticles" type="button">Download articles.json</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="assets/admin.js"></script>
+</body>
+</html>

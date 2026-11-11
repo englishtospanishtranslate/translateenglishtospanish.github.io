@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide — {SITE}</title>
+<meta name="description" content="">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230e2a47'/><text x='32' y='43' font-family='sans-serif' font-size='26' font-weight='bold' fill='%23f5a623' text-anchor='middle'>ES</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="siteHeader"></div>
+<div class="wrap">
+  <article class="post" id="articleBody">
+    <p class="meta"><a href="guides.html">← All guides</a></p>
+    <h1 id="aTitle">Loading…</h1>
+    <p class="meta" id="aMeta"></p>
+    <div id="aContent"></div>
+  </article>
+  <section class="block" style="padding-top:0">
+    <h2 class="sec">More guides</h2>
+    <div class="grid" id="articlesGrid"></div>
+  </section>
+</div>
+<div id="siteFooter"></div>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var slug = new URLSearchParams(location.search).get("slug") || "";
+  fetch("data/articles.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (list) {
+    var a = list.filter(function (x) { return x.slug === slug && x.published; })[0];
+    if (!a) {
+      document.getElementById("aTitle").textContent = "Guide not found";
+      document.getElementById("aContent").innerHTML = "<p>This guide does not exist or is not published yet. <a href='guides.html'>Browse all guides</a>.</p>";
+      return;
+    }
+    document.title = a.title + " — Guide";
+    document.getElementById("aTitle").textContent = a.title;
+    document.getElementById("aMeta").textContent = (a.category || "Guide") + (a.date ? " · " + a.date : "");
+    document.getElementById("aContent").innerHTML = a.content || "";
+  }).catch(function () {
+    document.getElementById("aTitle").textContent = "Could not load this guide";
+  });
+})();
+</script>
+</body>
+</html>

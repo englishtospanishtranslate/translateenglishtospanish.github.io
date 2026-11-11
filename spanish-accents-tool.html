@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spanish Accents &amp; Characters Tool — {SITE}</title>
+<meta name="description" content="">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230e2a47'/><text x='32' y='43' font-family='sans-serif' font-size='26' font-weight='bold' fill='%23f5a623' text-anchor='middle'>ES</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div id="siteHeader"></div>
+<div class="wrap">
+  <div class="calc">
+    <h1>Spanish Accents &amp; Characters Tool</h1>
+    <p class="sub">Click any character to add it to your text, then copy the finished text. No Spanish keyboard needed.</p>
+    <div id="charBoard" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px"></div>
+    <div class="field"><label>Your text</label>
+      <textarea id="accText" rows="5" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;font-size:1.05rem" placeholder="Type here, then click the characters above…"></textarea></div>
+    <div class="btnrow">
+      <button class="calc-btn" id="accCopy" type="button">Copy text</button>
+      <button class="ghost" id="accStrip" type="button">Remove all accents</button>
+      <button class="ghost" id="accClear" type="button">Clear</button>
+    </div>
+    <p class="note">Accents change meaning in Spanish: <strong>sí</strong> = yes, <strong>si</strong> = if · <strong>tú</strong> = you, <strong>tu</strong> = your · <strong>él</strong> = he, <strong>el</strong> = the. Spanish also opens questions and exclamations with upside-down marks: ¿ and ¡.</p>
+  </div>
+</div>
+<div id="siteFooter"></div>
+<script src="assets/site.js"></script>
+<script>
+var chars = ["á","é","í","ó","ú","Á","É","Í","Ó","Ú","ñ","Ñ","ü","Ü","¡","¿","«","»","—"];
+var board = document.getElementById("charBoard"), ta = document.getElementById("accText");
+chars.forEach(function (ch) {
+  var b = document.createElement("button");
+  b.type = "button"; b.textContent = ch;
+  b.style.cssText = "font-size:1.25rem;padding:9px 15px;border:1px solid var(--line);background:#f7fafc;border-radius:9px;cursor:pointer";
+  b.addEventListener("click", function () {
+    var s = ta.selectionStart || ta.value.length;
+    ta.value = ta.value.slice(0, s) + ch + ta.value.slice(ta.selectionEnd || s);
+    ta.focus(); ta.selectionStart = ta.selectionEnd = s + 1;
+  });
+  board.appendChild(b);
+});
+document.getElementById("accCopy").addEventListener("click", function () { if (navigator.clipboard) navigator.clipboard.writeText(ta.value); });
+document.getElementById("accClear").addEventListener("click", function () { ta.value = ""; });
+document.getElementById("accStrip").addEventListener("click", function () {
+  ta.value = ta.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+});
+</script>
+</body>
+</html>
